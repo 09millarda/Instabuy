@@ -1,5 +1,5 @@
 # Instabuy
-www.instabuyapp.azurewebsites.net
+http://instabuyapp.azurewebsites.net/
 
 An eBay automated searcher client.
 
