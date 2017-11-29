@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<br />
+    <div class="jumbotron" id="personalModal">
+        <h1>Hey There</h1>
+        <p class="lead">Instabuy is a portfolio piece create by myself using the .NET MVC Entity Framework. It utilises the eBay API to return search results using user-set filters. To view the source code and my other projects, click the button below to visit my GitHub page.</p>
+        <p>
+            <a href="https://asp.net" class="btn btn-primary btn-lg" target="_blank">My GitHub Page &raquo;</a>&nbsp;&nbsp;&nbsp;
+            <a class="btn btn-danger btn-lg" style="color: white; cursor: pointer;" onclick="document.getElementById('personalModal').remove();">Close Modal</a>
+        </p>
+    </div>
+
+    <div style="text-align: center;">
+        <img src="~/Content/img/InstabuyLogo.png" width="200" /><br />
+        <h1 style="margin-top: 10px; font-size: 50px;">InstaBuy</h1>
+    </div><br /><br /><br />
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Register For Free</h2>
+            <p>
+                Create an account for free. All accounts are locked to having up to three Search Objects and searching eBay once every 10 seconds.
+            </p>
+            <p><a class="btn btn-default" href="/Account/Register" title="Create A Free Account">Register For Free &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+            <h2>Search Automatically</h2>
+            <p>Enter your search filters on the dashboard page and then click the start button. You will be alerted when a new listing is found.</p>
+            <p><a class="btn btn-default" href="/Dashboard" title="Go To Your Dashboard">Go To Dashboard &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+            <h2>Win On eBay</h2>
+            <p>Get alerted everytime a new listing is found so you know about great deals before anyone else. Now, go and win on eBay!</p>
+            <p><a class="btn btn-default" href="/Account/Login" title="Go Go Go!">Go, Win! &raquo;</a></p>
+        </div>
+    </div>

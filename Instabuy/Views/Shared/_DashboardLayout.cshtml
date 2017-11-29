@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Instabuy</title>
+    @Styles.Render("~/Content/styles")
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("css", required: false)
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        @Html.ActionLink("Instabuy", "Index", "Home", new { }, new { @class = "navbar-brand" })
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor03">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    @if (Request.Url.AbsolutePath.Split('/')[1].ToUpper() == "DASHBOARD")
+                    {
+                        @Html.ActionLink("Dashboard", "Index", "Dashboard", new { }, new { @class = "navbar-brand" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Home", "Index", "Home", new { }, new { @class = "navbar-brand" })
+                    }
+                </li>
+            </ul>
+            <div class="my-2 my-lg-0">
+                @if (Request.Url.AbsolutePath.Split('/')[1].ToUpper() == "DASHBOARD")
+                {
+                    <a href="https://docs.google.com/document/d/1cqLRKj8dAo0rlEQZwQkmbcjX-b-GG6wLVBg9O01RqhM/edit?usp=sharing" target="_blank" class="navbar-brand">User Manual</a>
+                    @Html.ActionLink("Log Off", "Logoff", "Account", new { }, new { @class = "navbar-brand", id = "btn_logOff" })
+                }
+                else
+                {
+                    @Html.ActionLink("Login", "Login", "Account", new { }, new { @class = "navbar-brand" })
+                    @Html.ActionLink("Register", "Register", "Account", new { }, new { @class = "navbar-brand" })
+                }
+            </div>
+        </div>
+    </nav>
+    <div>
+        @RenderBody()
+        <div style="padding: 0px 25px;">
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - Instabuy</p>
+            </footer>
+        </div>        
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="~/Scripts/js-cookie.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

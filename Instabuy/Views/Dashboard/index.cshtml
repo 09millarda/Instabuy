@@ -1,0 +1,211 @@
+﻿@using Instabuy.ViewModels
+@model DashboardViewModel
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<div id="searchesBar">
+    <!-- Add the headers. Make first on active -->
+    @for (var i = 0; i < Model.SearchObjects.Count; i++)
+    {
+        string active = "";
+        if (i == 0) {
+            active = "active";
+        }
+
+        <div class="header @active" data-id="@Model.SearchObjects[i].Id" title="Create a new Search Query">@Model.SearchObjects[i].Name</div>
+    }
+    <div class="header" id="newSearch" style="width: 40px; text-align: center; padding: 7px 0px; width: 45px;">+</div>
+</div>
+<div id="dashboardContent">
+    <div class="row">
+        <div class="col-lg-12" style="white-space: nowrap; overflow-x: auto;" id="searchControlRow">
+            <button class="btn btn-default" style="cursor: pointer;" id="btn_configureFilters" title="Show/Hide filter configuration">Configure Filters</button>
+            <div class="seperator" style="display: inline-block; width: 10px;"></div>
+            <button class="btn btn-primary" style="cursor: pointer;" id="btn_StartSearch" data-running="false" title="Start/Stop the search">Start Search</button>
+            <div class="seperator" style="display: inline-block; width: 10px;"></div>
+            <button class="btn btn-dark" style="cursor: pointer;" id="btn_ClearSearch" title="Clear the results table">Clear Results</button>
+            <div class="seperator" style="display: inline-block; width: 10px;"></div>
+            <button class="btn btn-danger" style="cursor: pointer;" id="btn_DeleteSearch" title="Delete the active Search Query">Delete Search</button>
+        </div>
+    </div>
+    @using (Html.BeginForm("UpdateFilters", "Dashboard"))
+    {
+        <div style="max-width: 1000px;" id="filterConfigContainer">
+            <div style="height: 15px; width: 100%;"></div>
+            <div class="row" style="width: 100%;">
+                <div class="col-md-4">
+                    <label for="SearchObjectDto_Name">Search Object Name *</label>
+                    @Html.TextBoxFor(m => m.SearchObjectDto.Name, new { placeholder = "Max. 30 chars", @class = "form-input", maxlength = 30 })
+                </div>
+                <div class="col-md-4">
+                    <label for="SearchObjectDto_Keywords">Keywords (Click <a href="https://docs.google.com/document/d/1cqLRKj8dAo0rlEQZwQkmbcjX-b-GG6wLVBg9O01RqhM/edit#heading=h.ukvkm5ykfc9" target="_blank">here</a> for help) *</label>
+                    @Html.TextAreaFor(m => m.SearchObjectDto.Keywords, new { placeholder = "E.g. iPhone,5s-case-screen", @class = "form-input", maxlength = 255 })
+                </div>
+                <div class="col-md-4">
+                    <label for="SearchObjectDto_ConditionTypeId">Condition Type *</label>
+                    @Html.DropDownListFor(m => m.SearchObjectDto.ConditionTypeId, new SelectList(Model.ConditionTypes, "Id", "Name"), new { @class = "form-input", style = "cursor: pointer;" })
+                </div>
+            </div>
+            <div style="height: 15px; width: 100%;"></div>
+            <div class="row" style="width: 100%;">
+                <div class="col-md-4">
+                    <label for="SearchObjectDto_MinPrice">Minimum Price (£)</label>
+                    @Html.TextBoxFor(m => m.SearchObjectDto.MinPrice, new { placeholder = "Min. 0 (nearest pound)", @class = "form-input number" })
+                </div>
+                <div class="col-md-4">
+                    <label for="SearchObjectDto_MaxPrice">Maximum Price (£)</label>
+                    @Html.TextBoxFor(m => m.SearchObjectDto.MaxPrice, new { placeholder = "(nearest pound)", @class = "form-input number" })
+                </div>
+                <div class="col-md-4">
+                    <label for="SearchObjectDto_ConditionTypeId">Listing Type *</label>
+                    @Html.DropDownListFor(m => m.SearchObjectDto.ListingTypeId, new SelectList(Model.ListingTypes, "Id", "Name"), new { @class = "form-input", style = "cursor: pointer;" })
+                </div>
+            </div>
+            <div style="height: 15px; width: 100%;"></div>
+            <div class="row" style="width: 100%;">
+                <div class="col-md-4">
+                    <label for="SearchObjectDto_FeedbackScoreMin">Minimum Feedback Score</label>
+                    @Html.TextBoxFor(m => m.SearchObjectDto.FeedbackScoreMin, new { placeholder = "Min. 0", @class = "form-input feedbackScore number" })
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="SearchObjectDto_ReturnsAcceptedOnly">Show Listings That Accept Returns Only?</label><br />
+                        <div style="width: 100%; height: 10px"></div>
+                        <input type="checkbox" name="SearchObjectDto_ReturnsAcceptedOnly" id="SearchObjectDto_ReturnsAcceptedOnly" checked />
+                        <label for="SearchObjectDto_ReturnsAcceptedOnly">Show "Returns Allowed" Only</label>                                          
+                    </div>                    
+                </div>
+                <div class="col-md-4">
+                    <label for="SearchObjectDto_ConditionTypeId">Filter Settings</label><br />
+                    <input type="submit" class="btn btn-default" value="Save Filters" style="padding: 10px 25px 11px 25px; cursor: pointer;" title="Save Search Object filters" />
+                    <button id="resetFilters" class="btn btn-danger" style="padding: 8px 15px; cursor: pointer; margin-left: 10px;" title="Reset form">Reset Filters</button>
+                </div>
+            </div>
+        </div>
+    }
+    <hr />
+    <div class="row">
+        <div class="col-lg-8">
+            <h2 style="font-weight: 600;">Results Table: (updated once per minute)</h2>
+            <div id="resultsTableContainer">
+                <table class="table table-bordered table-hover" style="cursor: pointer;">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Product Title</th>
+                            <th>Listing Type</th>
+                            <th>Price</th>
+                            <th>Condition</th>
+                            <th>Country</th>
+                            <th>Location</th>
+                            <th>Shipping Info</th>
+                            <th>Shipping Cost</th>
+                            <th>Start Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr id="placeHolderLine">
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>            
+        </div>
+        <div class="col-lg-4" id="ListingView">
+            <h2 style="font-weight: 600;">Listing View:</h2>
+            <hr />
+            <div id="listingContainer">
+                <a href="" target="_blank" style="font-size: 18px; font-weight: 400;" id="url">Visit eBay Listing (new tab)</a><br />
+                <div style="width: 100%; height: 10px"></div>
+                <h3 style="font-weight: 400;" id="title">This is the title of the listing</h3>
+                <div class="container" style="width: 100%;">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <p style="margin-bottom: -5px;"><b>Seller Name: </b><span id="sellerName"></span></p>
+                            <p style="margin-bottom: -5px;"><b>Seller Rating: </b><span id="sellerScore">%</span></p>
+                            <hr />
+                            <p style="margin-bottom: -5px; margin-top: -8px;"><b>Item Price:</b> <span id="price"></span></p>
+                            <p style="margin-bottom: -5px;"><b>Shipping Cost:</b> <span id="shippingCost"></span></p>
+                            <hr />
+                            <p style="margin-top: -8px;"><b><span id="returns" style="color: #f44242;"></span></b></p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p style="margin-bottom: -5px; margin-top: -8px;"><b>Location:</b> <span id="shipsFrom"></span></p>
+                            <p style="margin-bottom: -5px;"><b>Listing Type:</b> <span id="listingType"></span></p>
+                            <hr />
+                            <p style="margin-top: -8px;"><b>ID:</b> <span id="ID"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div id="images">
+                    <div class="row imgRow">
+                    </div>
+                </div>                
+                <p style="margin-top: 15px;"><b>Condition: </b><span id="condition"></span></p>
+                <p style="font-weight: 600; margin-bottom: 0px; margin-top: -10px;">Description</p>
+                <div id="description" style="font-size: 16px;"></div><br />
+                <p><b>Item Specifics:</b></p>
+                <ul id="itemSpecifics">
+                    <li>None</li>
+                </ul>
+            </div>
+            <div id="loadingListing">
+                <h2 style="color: red; font-weight: 600;">Loading...</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        // store session cookie token for web api calls
+        Cookies.set('token', '@Model.hashKey');
+
+        // Set SearchObjects JSON values from SearchObjects list
+        var searchObjects = @Html.Raw(Json.Encode(Model.SearchObjects));
+
+        var listingTypes = @Html.Raw(Json.Encode(Model.ListingTypes));
+        var conditionTypes = @Html.Raw(Json.Encode(Model.ConditionTypes));
+
+        // Ask for notification privelage if not enabled nor disabled
+        if (Notification.permission == "default") {
+            swal({
+                title: "Can you enable notifications?",
+                text: "If you don't you won't receive alerts when a new listing is found...",
+                icon: "info",
+                buttons: true,
+                dangerMode: false
+            }).then(function (choice) {
+                if (choice) {
+                    Notification.requestPermission(function (permission) {
+                        if (permission == "granted") {
+                            swal("Nice One!", "We'll be able to tell you when a new listing is found!", "success");
+                            var n = new Notification("Hi There!", {
+                                body: "You won't regret this...",
+                                icon: "/Content/img/InstabuyLogo.png"
+                            });
+                            setTimeout(n.close.bind(n), 5000);
+                        } else {
+                            swal("Awww :(", "You won't be able to receive notifications now... You can change this later, though.", "error");
+                        }
+                    });
+                } else {
+                    swal("Awww :(", "You won't be able to receive notifications now... You can change this later, though.", "error");
+                }
+            });
+        }
+    </script>
+    <script src="~/Content/scripts/dashboard/index.js"></script>
+}

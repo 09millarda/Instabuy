@@ -1,0 +1,185 @@
+﻿body {
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-top: 25px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+#filterConfigContainer input, select {
+    max-width: none;
+}
+
+#searchesBar {
+    width: 100%;
+    overflow-x: auto;
+    padding: 0px 25px;
+    background: #f1f1f1;
+    padding-top: 15px;
+    white-space: nowrap;
+}
+
+.header {
+    padding: 7px 15px;
+    box-sizing: border-box;
+    width: 200px;
+    cursor: pointer;
+    background: #e6e6e6;
+    display: inline-block;
+    border: 1px solid lightgrey;
+    font-size: 15px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom: 1px solid transparent;
+}
+
+    .header:hover {
+        background: #fff;
+        border: 1px solid #b1c3e0;
+        border-bottom: 1px solid #e6e9ef;
+    }
+
+    .header.active {
+        background: #fff;
+        border: 1px solid #b1c3e0;
+        border-bottom: 1px solid #e6e9ef;
+    }
+
+#dashboardContent {
+    padding: 15px 25px;
+}
+
+.btn {
+    font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important;
+    text-transform: none !important;
+    font-weight: 500 !important;
+}
+
+#dashboardContent button {
+    font-size: 15px !important;
+}
+
+.form-input {
+    display: block;
+    cursor: text;
+    border: 1px solid #DDD;
+    padding: 9px 12px;
+    width: 100%;
+    padding-bottom: 11px;
+    box-sizing: border-box;
+}
+
+.form-input::-webkit-input-placeholder {
+    color: #999;
+}
+
+.funkyradio div {
+    clear: both;
+    overflow: hidden;
+}
+
+.funkyradio label {
+    width: 100%;
+    border: 1px solid #D1D3D4;
+    font-weight: normal;
+}
+
+.funkyradio input[type="checkbox"]:empty {
+    display: none;
+}
+
+    .funkyradio input[type="checkbox"]:empty ~ label {
+        position: relative;
+        line-height: 2.5em;
+        text-indent: 4em;
+        margin-top: 2em;
+        padding: 3px 0px 4px 0px;
+        cursor: pointer;
+        user-select: none;
+    }
+
+        .funkyradio input[type="checkbox"]:not(:checked) ~ label:before {
+            position: absolute;
+            display: block;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            content: '';
+            width: 3.1em;
+            background: #f93e3e;
+            text-indent: .82em;
+            padding-top: .3em;
+        }
+
+    .funkyradio input[type="checkbox"]:checked ~ label:before {
+        text-indent: .82em;
+        background-color: #ccc;
+    }
+
+.funkyradio-info input[type="checkbox"]:checked ~ label:before {
+    color: #fff;
+    background-color: #61e85f;
+}
+
+.field-validation-error {
+    color: #ff2d2d;
+}
+
+.input-validation-error {
+    border-color: #ff2d2d !important;
+}
+
+#ListingView p {
+    font-size: 20px;
+}
+
+span {
+    color: grey;
+}
+
+#itemSpecifics li {
+    font-size: 20px;
+    display: inline-block;
+    margin-right: 15px;
+}
+
+#images img {
+    cursor: pointer;
+}
+
+#loadingListing {
+    display: none;
+}
+#listingContainer {
+    display: none;
+}
+
+tr.active {
+    background: lightgreen !important;
+}
+
+tr.newBatch {
+    background: #fbdee3;
+}
+
+#resultsTableContainer {
+    overflow: auto;
+    display: block;
+    min-height: 500px;
+    height: calc(100vh - 250px);
+}
