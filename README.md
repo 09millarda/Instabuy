@@ -1,4 +1,7 @@
 # Instabuy
+
+UPDATE!!! The free trial ended with Azure so the link won't work. You can download the project and host it yourself if you want to see it working. It should be fine.
+
 http://instabuyapp.azurewebsites.net/
 
 An eBay automated searcher client.
